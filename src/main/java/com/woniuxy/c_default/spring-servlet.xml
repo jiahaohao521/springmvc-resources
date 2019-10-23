@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		其实，映射器处理器 和 适配器处理器 都可以不写 
+		如果不写，会有默认的 映射器 和 适配器
+		
+		映射器默认为：BeanNameUrlHandlerMapping
+		适配器默认为：SimpleControllerHandlerAdapter
+	-->
+
+	<bean id="/user.do" class="com.woniuxy.c_default.UserController"></bean>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+</beans>

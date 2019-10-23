@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		映射器处理器 
+		1. 接受请求地址：  /haha.do  
+		2. 返回控制器：	UserController
+		
+		BeanNameUrlHandlerMapping要求，请求地址中的url和控制器bean的id必须完全相同！
+		SimpleUrlHandlerMapping要求，请求地址中的url先和mappings属性中的key比较，找到key后，再找与此key的值映射的bean。
+		
+	-->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/haha.do">/user.do</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 
+		适配器处理器 
+		1. 接受控制器，并且执行控制器  ：  UserController
+		2.返回ModelAndView：   index
+		
+		SimpleControllerHandlerAdapter，专门调用控制器的ModelAndView handleRequest(), 
+		那么传入给该适配器的控制器就必须拥有ModelAndView handleRequest()，要求控制器必须实现Controller接口。
+		
+		HttpRequestHandlerAdapter，专门调用控制器的void handleRequest()方法，
+		那么传入给该适配器的控制器，就必须有handleRequest方法才能正确调用，要求控制器必须实现HttpRequestHandler接口。
+		
+	-->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+
+	<!-- 
+		配置控制器
+		注意， 控制器的id必须以"/"开头， 否则....
+	 -->
+	<bean id="/user.do" class="com.woniuxy.b_replace.UserController"></bean>
+	
+	<!-- 
+		视图解析器
+		1. 接受ModelAndView： index， 在“逻辑视图名”前后添加 前缀和后缀： /index.jsp （这就是物理视图）
+		2.返回物理视图
+		
+		InternalResourceViewResolver，会在逻辑视图前后添加前缀和后缀。 
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/"></property>
+			<property name="suffix" value=".jsp"></property>
+		</bean>
+		
+		BeanNameViewResolver，也会拿到ModelAndView中封装的“逻辑视图名” 该解析器不会在逻辑视图名前后加前后缀，
+		而是直接拿着逻辑视图名，去找同名的bean, 该bean还必须实现一个接口： View接口. 最终给客户端浏览器响应什么页面，就有
+		该bean中的render方法决定了，毕竟render方法有request和response参数，可以用来转发或者重定向。
+	 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
+	<bean id="index" class="com.woniuxy.b_replace.Foo"></bean>
+	
+</beans>

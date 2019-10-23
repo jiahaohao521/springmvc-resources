@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		映射器处理器 
+		1. 接受请求地址：  /user.do
+		2. 返回控制器：	UserController
+	-->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>
+	
+	<!-- 
+		适配器处理器 
+		1. 接受控制器，并且执行控制器  ：  UserController
+		2.返回ModelAndView：   index
+	-->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+
+	<!-- 
+		配置控制器
+		注意， 控制器的id必须以"/"开头， 否则....
+	 -->
+	<bean id="/user.do" class="com.woniuxy.a_hello.UserController"></bean>
+	
+	<!-- 
+		视图解析器
+		1. 接受ModelAndView： index， 在“逻辑视图名”前后添加 前缀和后缀： /index.jsp （这就是物理视图）
+		2.返回物理视图
+	 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+</beans>
